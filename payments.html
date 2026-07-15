@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  >
+
+  <meta name="theme-color" content="#090b08">
+
+  <title>Выплаты и VIP-программа — SCAUTDOM</title>
+
+  <meta
+    name="description"
+    content="Подробные условия выплат скаутам SCAUTDOM: вознаграждение до 3 000 долларов за модель, VIP-уровни, примеры расчётов и антифрод."
+  >
+
+  <link rel="canonical" href="https://scautdom.com/payments.html">
+
+  <meta property="og:title" content="Выплаты и VIP-программа — SCAUTDOM">
+
+  <meta
+    property="og:description"
+    content="Получай до $3 000 за каждую одобренную модель и дополнительный процент от активной сети."
+  >
+
+  <meta property="og:url" content="https://scautdom.com/payments.html">
+  <meta property="og:type" content="website">
+
+  <style>
+    :root {
+      --bg: #090b08;
+      --surface: #121610;
+      --lime: #c7ff3d;
+      --lime-soft: rgba(199, 255, 61, 0.1);
+      --white: #f7f8f2;
+      --gray: #aeb4a8;
+      --line: rgba(255, 255, 255, 0.11);
+      --red: #ff8c84;
+      --container: 1160px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      width: 100%;
+      max-width: 100%;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      width: 100%;
+      max-width: 100%;
+      min-width: 320px;
+      color: var(--white);
+      background:
+        radial-gradient(
+          circle at 85% 8%,
+          rgba(144, 202, 48, 0.15),
+          transparent 28rem
+        ),
+        var(--bg);
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .container {
+      width: calc(100% - 40px);
+      max-width: var(--container);
+      min-width: 0;
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+      border-bottom: 1px solid var(--line);
+      background: rgba(9, 11, 8, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .header-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .logo {
+      flex-shrink: 0;
+      color: var(--white);
+      font-size: 23px;
+      font-weight: 950;
+      letter-spacing: -0.07em;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--lime);
+    }
+
+    .desktop-menu {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .desktop-menu a {
+      color: #c5cabf;
+      font-size: 14px;
+      font-weight: 750;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .desktop-menu a:hover,
+    .desktop-menu a.active {
+      color: var(--lime);
+    }
+
+    .mobile-navigation {
+      position: relative;
+      display: none;
+      margin-left: auto;
+    }
+
+    .menu-button {
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid rgba(199, 255, 61, 0.38);
+      border-radius: 999px;
+      color: var(--lime);
+      background: rgba(199, 255, 61, 0.07);
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      position: absolute;
+      top: 53px;
+      right: 0;
+      z-index: 1001;
+      width: 270px;
+      max-width: calc(100vw - 28px);
+      padding: 9px;
+      display: none;
+      gap: 4px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #151912;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.55);
+    }
+
+    .mobile-menu.open {
+      display: grid;
+    }
+
+    .mobile-menu a {
+      min-height: 50px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      border-radius: 14px;
+      color: #d2d7cc;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .mobile-menu a:hover,
+    .mobile-menu a.active {
+      color: #11140d;
+      background: var(--lime);
+    }
+
+    .mobile-menu .contact-link {
+      margin-top: 4px;
+      color: #11140d;
+      background: #b8f5c3;
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      padding: 86px 0 76px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+      background-image:
+        linear-gradient(
+          rgba(255, 255, 255, 0.024) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.024) 1px,
+          transparent 1px
+        );
+      background-size: 90px 90px;
+      mask-image: linear-gradient(to bottom, black, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+      gap: 46px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      max-width: 100%;
+      margin-bottom: 28px;
+      padding: 11px 18px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border: 1px solid rgba(199, 255, 61, 0.42);
+      border-radius: 999px;
+      color: var(--lime);
+      background: rgba(199, 255, 61, 0.06);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 9px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 20px rgba(199, 255, 61, 0.7);
+      content: "";
+    }
+
+    h1 {
+      width: 100%;
+      max-width: 100%;
+      font-size: clamp(52px, 6.8vw, 98px);
+      line-height: 0.89;
+      letter-spacing: -0.065em;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+
+    .accent {
+      color: var(--lime);
+    }
+
+    .hero-description {
+      max-width: 780px;
+      margin-top: 32px;
+      color: #bcc2b7;
+      font-size: clamp(18px, 2vw, 23px);
+    }
+
+    .hero-description strong {
+      color: var(--white);
+    }
+
+    .hero-actions {
+      max-width: 100%;
+      margin-top: 33px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+    }
+
+    .button {
+      min-height: 58px;
+      max-width: 100%;
+      padding: 0 27px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 15px;
+      font-weight: 900;
+      text-align: center;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      border-color: var(--lime);
+      color: #11140d;
+      background: var(--lime);
+    }
+
+    .reward-card {
+      padding: 31px;
+      border: 1px solid rgba(199, 255, 61, 0.35);
+      border-radius: 28px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(199, 255, 61, 0.14),
+          rgba(255, 255, 255, 0.025)
+        );
+    }
+
+    .reward-label {
+      color: #b7bdaf;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .reward-value {
+      margin: 10px 0 8px;
+      color: var(--lime);
+      font-size: clamp(60px, 7vw, 90px);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: -0.07em;
+    }
+
+    .reward-card p {
+      color: #c2c8bc;
+    }
+
+    .quick-list {
+      margin-top: 23px;
+      display: grid;
+      gap: 9px;
+      list-style: none;
+    }
+
+    .quick-list li {
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      color: #cbd1c5;
+      background: rgba(0, 0, 0, 0.17);
+    }
+
+    .quick-list li::before {
+      margin-right: 9px;
+      color: var(--lime);
+      font-weight: 950;
+      content: "✓";
+    }
+
+    .section {
+      width: 100%;
+      padding: 86px 0;
+    }
+
+    .section-line {
+      border-top: 1px solid var(--line);
+    }
+
+    .section-heading {
+      max-width: 850px;
+      margin-bottom: 40px;
+    }
+
+    .section-number {
+      margin-bottom: 15px;
+      display: block;
+      color: var(--lime);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      max-width: 100%;
+      font-size: clamp(38px, 5vw, 68px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+
+    .section-intro {
+      max-width: 780px;
+      margin-top: 20px;
+      color: var(--gray);
+      font-size: 19px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .accent-card {
+      border-color: rgba(199, 255, 61, 0.35);
+      background:
+        linear-gradient(
+          140deg,
+          rgba(199, 255, 61, 0.1),
+          rgba(255, 255, 255, 0.02)
+        );
+    }
+
+    .card-number {
+      width: 43px;
+      height: 43px;
+      margin-bottom: 24px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(199, 255, 61, 0.4);
+      border-radius: 50%;
+      color: var(--lime);
+      background: var(--lime-soft);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      font-size: 23px;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+
+    .card p {
+      color: var(--gray);
+    }
+
+    .payment-timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .payment-card {
+      min-width: 0;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .payment-card.active {
+      border-color: rgba(199, 255, 61, 0.35);
+      background:
+        linear-gradient(
+          140deg,
+          rgba(199, 255, 61, 0.1),
+          rgba(255, 255, 255, 0.02)
+        );
+    }
+
+    .payment-month {
+      color: var(--lime);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .payment-value {
+      margin: 9px 0 15px;
+      color: var(--white);
+      font-size: clamp(42px, 5vw, 62px);
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .payment-card p {
+      color: var(--gray);
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      min-width: 0;
+      padding: 27px;
+      display: grid;
+      grid-template-columns: 62px minmax(0, 1fr);
+      gap: 21px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 23px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .step-number {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 19px;
+      color: #10140c;
+      background: var(--lime);
+      font-size: 19px;
+      font-weight: 950;
+    }
+
+    .step h3 {
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    .step p {
+      color: var(--gray);
+    }
+
+    .vip-table {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(199, 255, 61, 0.3);
+      border-radius: 26px;
+    }
+
+    .vip-row {
+      min-height: 82px;
+      padding: 18px 26px;
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 0.7fr)
+        minmax(0, 1.3fr);
+      gap: 18px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .vip-row:last-child {
+      border-bottom: 0;
+    }
+
+    .vip-row:first-child {
+      min-height: 62px;
+      color: #11140d;
+      background: var(--lime);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .vip-count {
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 850;
+    }
+
+    .vip-percent {
+      color: var(--lime);
+      font-size: 36px;
+      font-weight: 950;
+    }
+
+    .vip-rule {
+      color: var(--gray);
+      font-size: 15px;
+    }
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .example {
+      min-width: 0;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .example-label {
+      color: var(--lime);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .example h3 {
+      margin: 12px 0;
+      font-size: 25px;
+    }
+
+    .example p {
+      color: var(--gray);
+    }
+
+    .example-result {
+      margin-top: 20px;
+      padding: 17px;
+      border-radius: 16px;
+      color: var(--white);
+      background: var(--lime-soft);
+      font-weight: 850;
+    }
+
+    .example-result strong {
+      color: var(--lime);
+    }
+
+    .check-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+      list-style: none;
+    }
+
+    .check-list li {
+      min-width: 0;
+      min-height: 96px;
+      padding: 21px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      color: #c3c9bd;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .check-list li::before {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #10140c;
+      background: var(--lime);
+      font-size: 13px;
+      font-weight: 950;
+      content: "✓";
+    }
+
+    .check-list strong {
+      color: var(--white);
+    }
+
+    .info-box {
+      max-width: 100%;
+      margin-top: 20px;
+      padding: 26px;
+      border-left: 4px solid var(--lime);
+      border-radius: 0 20px 20px 0;
+      color: #c5cbbf;
+      background: rgba(199, 255, 61, 0.07);
+      overflow-wrap: anywhere;
+    }
+
+    .info-box strong {
+      color: var(--white);
+    }
+
+    .warning-box {
+      max-width: 100%;
+      margin-top: 20px;
+      padding: 26px;
+      border: 1px solid rgba(255, 140, 132, 0.3);
+      border-radius: 20px;
+      color: #d6c5c2;
+      background: rgba(255, 140, 132, 0.07);
+    }
+
+    .warning-box strong {
+      color: var(--red);
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    details[open] {
+      border-color: rgba(199, 255, 61, 0.32);
+      background: rgba(199, 255, 61, 0.055);
+    }
+
+    summary {
+      min-height: 82px;
+      padding: 23px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: var(--white);
+      font-size: 19px;
+      font-weight: 850;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--lime);
+      background: var(--lime-soft);
+      font-size: 22px;
+      content: "+";
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    .details-content {
+      padding: 0 23px 24px;
+      color: var(--gray);
+    }
+
+    .faq {
+      display: grid;
+      gap: 12px;
+    }
+
+    .contact-card {
+      max-width: 100%;
+      padding: clamp(30px, 6vw, 70px);
+      border: 1px solid rgba(199, 255, 61, 0.38);
+      border-radius: 34px;
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(199, 255, 61, 0.19),
+          transparent 22rem
+        ),
+        #121610;
+      overflow: hidden;
+    }
+
+    .contact-card p {
+      max-width: 760px;
+      margin-top: 22px;
+      color: #bcc3b6;
+      font-size: 19px;
+    }
+
+    .ready-list {
+      margin: 31px 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      list-style: none;
+    }
+
+    .ready-list li {
+      min-width: 0;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: #c7cdc0;
+      background: rgba(0, 0, 0, 0.16);
+    }
+
+    .telegram-button {
+      min-height: 64px;
+      max-width: 100%;
+      padding: 0 31px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: #11140d;
+      background: var(--lime);
+      font-size: 17px;
+      font-weight: 950;
+      text-align: center;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .telegram-button:hover {
+      transform: translateY(-2px);
+    }
+
+    footer {
+      width: 100%;
+      padding: 36px 0 45px;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      color: #858d81;
+      font-size: 13px;
+    }
+
+    .footer-inner strong {
+      color: #b8bfb3;
+    }
+
+    @media (max-width: 980px) {
+      .desktop-menu {
+        display: none;
+      }
+
+      .mobile-navigation {
+        display: block;
+      }
+
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .reward-card {
+        width: 100%;
+        max-width: 620px;
+      }
+
+      .cards {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: calc(100% - 28px);
+        max-width: calc(100% - 28px);
+      }
+
+      .header-inner {
+        min-height: 68px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .menu-button {
+        min-height: 40px;
+        padding: 0 16px;
+      }
+
+      .hero {
+        padding: 64px 0 58px;
+      }
+
+      .eyebrow {
+        margin-bottom: 25px;
+        padding: 10px 14px;
+        font-size: 11px;
+        letter-spacing: 0.09em;
+      }
+
+      h1 {
+        width: 100%;
+        font-size: clamp(40px, 11vw, 52px);
+        line-height: 0.92;
+        letter-spacing: -0.055em;
+      }
+
+      .hero-description {
+        font-size: 18px;
+      }
+
+      .hero-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .button {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      .reward-card {
+        width: 100%;
+        padding: 25px;
+      }
+
+      .reward-value {
+        font-size: 64px;
+      }
+
+      .section {
+        padding: 67px 0;
+      }
+
+      .section-heading {
+        margin-bottom: 30px;
+      }
+
+      h2 {
+        font-size: clamp(37px, 10.5vw, 52px);
+      }
+
+      .section-intro {
+        font-size: 17px;
+      }
+
+      .payment-timeline,
+      .example-grid,
+      .check-list,
+      .ready-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .card,
+      .payment-card,
+      .example {
+        padding: 24px;
+      }
+
+      .step {
+        padding: 21px;
+        grid-template-columns: 46px minmax(0, 1fr);
+        gap: 15px;
+      }
+
+      .step-number {
+        width: 46px;
+        height: 46px;
+        border-radius: 15px;
+        font-size: 16px;
+      }
+
+      .vip-table {
+        overflow: visible;
+        border: 0;
+        display: grid;
+        gap: 11px;
+      }
+
+      .vip-row {
+        min-height: auto;
+        padding: 21px;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 7px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.025);
+      }
+
+      .vip-row:first-child {
+        display: none;
+      }
+
+      .vip-percent {
+        font-size: 38px;
+      }
+
+      .contact-card {
+        width: 100%;
+        padding: 28px 23px;
+        border-radius: 27px;
+      }
+
+      .telegram-button {
+        width: 100%;
+        padding: 0 18px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 13px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: 10.8vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a class="logo" href="index.html">
+        SCAUT<span>DOM</span>
+      </a>
+
+      <nav class="desktop-menu" aria-label="Основное меню">
+        <a href="index.html">Главная</a>
+        <a href="scout.html">Инструкция скаута</a>
+        <a href="model.html">Условия моделей</a>
+        <a class="active" href="payments.html">Выплаты и VIP</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+
+      <div class="mobile-navigation">
+
+        <button
+          class="menu-button"
+          id="menuButton"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          Меню
+        </button>
+
+        <nav
+          class="mobile-menu"
+          id="mobileMenu"
+          aria-label="Мобильное меню"
+        >
+          <a href="index.html">Главная</a>
+          <a href="scout.html">Инструкция скаута</a>
+          <a href="model.html">Условия моделей</a>
+          <a class="active" href="payments.html">Выплаты и VIP</a>
+          <a class="contact-link" href="#contact">Контакты</a>
+        </nav>
+
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container hero-grid">
+
+        <div>
+
+          <div class="eyebrow">
+            Выплаты и VIP-программа
+          </div>
+
+          <h1>
+            ПОЛУЧАЙ<br>
+            <span class="accent">$3 000</span><br>
+            ЗА КАЖДУЮ<br>
+            МОДЕЛЬ
+          </h1>
+
+          <p class="hero-description">
+            Вознаграждение начисляется за одобренную модель, которая выполняет
+            согласованный рабочий план и завершает первые три месяца работы.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#payments">
+              Изучить выплаты
+            </a>
+
+            <a class="button" href="#vip">
+              VIP-программа
+            </a>
+          </div>
+
+        </div>
+
+        <aside class="reward-card">
+
+          <div class="reward-label">
+            Максимальное вознаграждение
+          </div>
+
+          <div class="reward-value">
+            $3 000
+          </div>
+
+          <p>
+            Компания самостоятельно принимает решение об одобрении кандидата и
+            несёт ответственность за качество проведённого отбора.
+          </p>
+
+          <ul class="quick-list">
+            <li>Фиксация каждой модели</li>
+            <li>Три расчётных месяца</li>
+            <li>VIP-процент от активной сети</li>
+            <li>Ручной учёт без кабинета</li>
+          </ul>
+
+        </aside>
+
+      </div>
+    </section>
+
+    <section class="section section-line" id="payments">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            01 — Основное вознаграждение
+          </span>
+
+          <h2>
+            КАК ВЫПЛАЧИВАЮТСЯ $3 000
+          </h2>
+
+          <p class="section-intro">
+            Вознаграждение привязано к первым трём полностью завершённым
+            расчётным месяцам работы одобренной модели.
+          </p>
+        </div>
+
+        <div class="payment-timeline">
+
+          <article class="payment-card active">
+            <div class="payment-month">
+              Первый месяц
+            </div>
+
+            <div class="payment-value">
+              $1 000
+            </div>
+
+            <p>
+              Начисляется после первого полностью завершённого месяца при
+              выполнении моделью согласованного рабочего плана.
+            </p>
+          </article>
+
+          <article class="payment-card">
+            <div class="payment-month">
+              Второй месяц
+            </div>
+
+            <div class="payment-value">
+              $1 000
+            </div>
+
+            <p>
+              Начисляется после второго полностью завершённого месяца при
+              продолжении активной работы модели.
+            </p>
+          </article>
+
+          <article class="payment-card">
+            <div class="payment-month">
+              Третий месяц
+            </div>
+
+            <div class="payment-value">
+              $1 000
+            </div>
+
+            <p>
+              Начисляется после третьего полностью завершённого месяца и
+              выполнения обязательного периода работы.
+            </p>
+          </article>
+
+        </div>
+
+        <div class="info-box">
+          <strong>Расчётным считается полностью завершённый рабочий месяц.</strong>
+          Конкретные даты фиксируются компанией после запуска модели.
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            02 — Условия начисления
+          </span>
+
+          <h2>
+            КОГДА ВОЗНИКАЕТ ПРАВО НА ВЫПЛАТУ
+          </h2>
+        </div>
+
+        <div class="steps">
+
+          <article class="step">
+            <div class="step-number">1</div>
+
+            <div>
+              <h3>Скаут передаёт кандидата</h3>
+
+              <p>
+                Компания получает имя, возраст, страну, обычные фотографии и
+                результаты первичного интервью.
+              </p>
+            </div>
+          </article>
+
+          <article class="step">
+            <div class="step-number">2</div>
+
+            <div>
+              <h3>Компания одобряет модель</h3>
+
+              <p>
+                Решение об одобрении принимает компания. Передача кандидата сама
+                по себе не создаёт право на выплату.
+              </p>
+            </div>
+          </article>
+
+          <article class="step">
+            <div class="step-number">3</div>
+
+            <div>
+              <h3>Фиксируется дата начала</h3>
+
+              <p>
+                После обучения и подготовки компания фиксирует дату начала
+                работы и расчётные периоды.
+              </p>
+            </div>
+          </article>
+
+          <article class="step">
+            <div class="step-number">4</div>
+
+            <div>
+              <h3>Модель выполняет рабочий план</h3>
+
+              <p>
+                Модель соблюдает согласованный график, обучается и продолжает
+                активную работу.
+              </p>
+            </div>
+          </article>
+
+          <article class="step">
+            <div class="step-number">5</div>
+
+            <div>
+              <h3>Закрывается расчётный месяц</h3>
+
+              <p>
+                После проверки активности полностью завершённый месяц
+                засчитывается в программу.
+              </p>
+            </div>
+          </article>
+
+          <article class="step">
+            <div class="step-number">6</div>
+
+            <div>
+              <h3>Начисляется выплата</h3>
+
+              <p>
+                Компания подтверждает результат и согласовывает выплату со
+                скаутом через Telegram.
+              </p>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            03 — Ответственность компании
+          </span>
+
+          <h2>
+            РЕШЕНИЕ ОБ ОДОБРЕНИИ ПРИНИМАЕТ КОМПАНИЯ
+          </h2>
+
+          <p class="section-intro">
+            Скаут отвечает за честность переданных данных. Компания отвечает за
+            итоговое решение о запуске кандидата.
+          </p>
+        </div>
+
+        <div class="cards">
+
+          <article class="card">
+            <div class="card-number">01</div>
+
+            <h3>Скаут передаёт правдивую информацию</h3>
+
+            <p>
+              Возраст, опыт, страна, фотографии и результаты интервью должны
+              соответствовать действительности.
+            </p>
+          </article>
+
+          <article class="card accent-card">
+            <div class="card-number">02</div>
+
+            <h3>Компания проводит отбор</h3>
+
+            <p>
+              Компания самостоятельно рассматривает кандидата и принимает
+              окончательное решение о начале сотрудничества.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-number">03</div>
+
+            <h3>Низкий доход не отменяет выплату</h3>
+
+            <p>
+              Если одобренная модель выполняет согласованный план и завершает
+              обязательные три месяца, доход ниже прогноза сам по себе не
+              отменяет вознаграждение скаута.
+            </p>
+          </article>
+
+        </div>
+
+        <div class="info-box">
+          После официального одобрения риск ошибки при выборе модели относится
+          к решению компании, если скаут не скрывал информацию и не нарушал
+          правила программы.
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            04 — Досрочный уход модели
+          </span>
+
+          <h2>
+            ЧТО ПРОИСХОДИТ, ЕСЛИ МОДЕЛЬ НЕ ЗАВЕРШИЛА ТРИ МЕСЯЦА
+          </h2>
+
+          <p class="section-intro">
+            Обязательное условие полной выплаты — завершение моделью первых
+            трёх расчётных месяцев.
+          </p>
+        </div>
+
+        <div class="example-grid">
+
+          <article class="example">
+            <div class="example-label">
+              Пример №1
+            </div>
+
+            <h3>Модель ушла в течение первого месяца</h3>
+
+            <p>
+              Первый расчётный месяц не завершён. Вознаграждение за эту модель
+              не начисляется.
+            </p>
+
+            <div class="example-result">
+              Итог: <strong>$0</strong>
+            </div>
+          </article>
+
+          <article class="example">
+            <div class="example-label">
+              Пример №2
+            </div>
+
+            <h3>Модель ушла в течение второго месяца</h3>
+
+            <p>
+              Обязательный трёхмесячный период не завершён. Ранее перечисленная
+              сумма учитывается как аванс и засчитывается при расчёте выплаты за
+              следующую одобренную модель скаута.
+            </p>
+
+            <div class="example-result">
+              Следующие выплаты: <strong>пересчитываются</strong>
+            </div>
+          </article>
+
+          <article class="example">
+            <div class="example-label">
+              Пример №3
+            </div>
+
+            <h3>Модель ушла в течение третьего месяца</h3>
+
+            <p>
+              Если третий месяц не был завершён полностью, обязательный период
+              считается невыполненным, а окончательный расчёт пересматривается.
+            </p>
+
+            <div class="example-result">
+              Третий платёж: <strong>не начисляется</strong>
+            </div>
+          </article>
+
+          <article class="example">
+            <div class="example-label">
+              Пример №4
+            </div>
+
+            <h3>Модель завершила три месяца</h3>
+
+            <p>
+              Модель выполнила обязательный период и согласованный рабочий план.
+              Скаут получает полное вознаграждение.
+            </p>
+
+            <div class="example-result">
+              Итог: <strong>$3 000</strong>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="warning-box">
+          <strong>Важно:</strong>
+          намеренное влияние скаута на уход модели, вмешательство в её работу
+          или нарушение правила прекращения рабочего общения может привести к
+          аннулированию связанных выплат.
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section-line" id="vip">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            05 — VIP-программа скаута
+          </span>
+
+          <h2>
+            ПОЛУЧАЙ ПРОЦЕНТ ОТ АКТИВНОЙ СЕТИ
+          </h2>
+
+          <p class="section-intro">
+            После достижения 10 активных моделей скаут получает дополнительный
+            процент от подтверждённого заработка моделей своей сети.
+          </p>
+        </div>
+
+        <div class="vip-table">
+
+          <div class="vip-row">
+            <span>Количество активных моделей</span>
+            <span>Процент скаута</span>
+            <span>VIP-уровень</span>
+          </div>
+
+          <div class="vip-row">
+            <span class="vip-count">10–14 моделей</span>
+            <span class="vip-percent">5%</span>
+            <span class="vip-rule">Первый VIP-уровень</span>
+          </div>
+
+          <div class="vip-row">
+            <span class="vip-count">15–19 моделей</span>
+            <span class="vip-percent">7%</span>
+            <span class="vip-rule">Повышенный уровень</span>
+          </div>
+
+          <div class="vip-row">
+            <span class="vip-count">20–29 моделей</span>
+            <span class="vip-percent">9%</span>
+            <span class="vip-rule">Профессиональный уровень</span>
+          </div>
+
+          <div class="vip-row">
+            <span class="vip-count">30 и более моделей</span>
+            <span class="vip-percent">10%</span>
+            <span class="vip-rule">Максимальный уровень</span>
+          </div>
+
+        </div>
+
+        <div class="info-box">
+          <strong>Процент зависит от текущего количества активных моделей.</strong>
+          Пока сеть сохраняет необходимый уровень, скаут продолжает получать
+          соответствующий процент.
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            06 — Изменение VIP-уровня
+          </span>
+
+          <h2>
+            ПРОЦЕНТ ПЕРЕСЧИТЫВАЕТСЯ ПО КОЛИЧЕСТВУ АКТИВНЫХ МОДЕЛЕЙ
+          </h2>
+        </div>
+
+        <div class="example-grid">
+
+          <article class="example">
+            <div class="example-label">
+              Сеть из 10 моделей
+            </div>
+
+            <h3>Скаут получает 5%</h3>
+
+            <p>
+              Все 10 моделей активны и выполняют рабочий план. Скаут находится
+              на первом VIP-уровне.
+            </p>
+
+            <div class="example-result">
+              VIP-процент: <strong>5%</strong>
+            </div>
+          </article>
+
+          <article class="example">
+            <div class="example-label">
+              Одна модель ушла
+            </div>
+
+            <h3>Осталось 9 активных моделей</h3>
+
+            <p>
+              Минимальный порог в 10 активных моделей больше не выполняется.
+              VIP-выплаты приостанавливаются до восстановления уровня.
+            </p>
+
+            <div class="example-result">
+              VIP-процент: <strong>приостановлен</strong>
+            </div>
+          </article>
+
+          <article class="example">
+            <div class="example-label">
+              Сеть выросла до 15 моделей
+            </div>
+
+            <h3>Процент повышается</h3>
+
+            <p>
+              После подтверждения 15 активных моделей скаут переходит на
+              следующий уровень.
+            </p>
+
+            <div class="example-result">
+              Новый VIP-процент: <strong>7%</strong>
+            </div>
+          </article>
+
+          <article class="example">
+            <div class="example-label">
+              Сеть снизилась с 20 до 18 моделей
+            </div>
+
+            <h3>Процент пересчитывается</h3>
+
+            <p>
+              После уменьшения количества активных моделей применяется уровень,
+              соответствующий текущему диапазону.
+            </p>
+
+            <div class="example-result">
+              Новый VIP-процент: <strong>7%</strong>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            07 — Кто считается активной моделью
+          </span>
+
+          <h2>
+            VIP-УРОВЕНЬ СТРОИТСЯ НА РЕАЛЬНО РАБОТАЮЩЕЙ СЕТИ
+          </h2>
+        </div>
+
+        <ul class="check-list">
+
+          <li>
+            <span>
+              <strong>Модель официально одобрена.</strong><br>
+              Компания завершила проверку и допустила её к работе.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Модель начала работу.</strong><br>
+              Зафиксирована дата запуска и расчётный период.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Модель соблюдает график.</strong><br>
+              Она продолжает выполнять согласованный рабочий план.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Модель не прекратила сотрудничество.</strong><br>
+              Ушедшие или временно неактивные модели не учитываются до
+              восстановления работы.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Активность подтверждена компанией.</strong><br>
+              Статус определяется по внутренней статистике и фактической работе.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Нет подтверждённых нарушений.</strong><br>
+              Модель и скаут соблюдают правила программы.
+            </span>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            08 — Антифрод
+          </span>
+
+          <h2>
+            ПРОЗРАЧНЫЙ УЧЁТ И ПРОВЕРКА НАРУШЕНИЙ
+          </h2>
+
+          <p class="section-intro">
+            Компания фиксирует кандидатов, даты передачи, одобрение, запуск,
+            активность моделей и основания для каждой выплаты.
+          </p>
+        </div>
+
+        <div class="cards">
+
+          <article class="card">
+            <div class="card-number">01</div>
+
+            <h3>Проверка кандидатов</h3>
+
+            <p>
+              Поддельные фотографии, чужие данные, вымышленные люди и попытки
+              повторно передать одну модель запрещены.
+            </p>
+          </article>
+
+          <article class="card accent-card">
+            <div class="card-number">02</div>
+
+            <h3>Проверка выплат</h3>
+
+            <p>
+              Перед начислением проверяются рабочий период, активность модели и
+              соблюдение скаутом правил программы.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-number">03</div>
+
+            <h3>Проверка VIP-сети</h3>
+
+            <p>
+              В VIP-уровень включаются только подтверждённые активные модели,
+              закреплённые за конкретным скаутом.
+            </p>
+          </article>
+
+        </div>
+
+        <div class="warning-box">
+          <strong>При обоснованном подозрении на мошенничество</strong>
+          выплаты могут быть временно приостановлены на период проверки. Если
+          нарушение подтверждается, связанные выплаты и VIP-проценты могут быть
+          аннулированы.
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            09 — Запрещённые действия
+          </span>
+
+          <h2>
+            ЧТО МОЖЕТ ПРИВЕСТИ К АННУЛИРОВАНИЮ ВЫПЛАТ
+          </h2>
+        </div>
+
+        <ul class="check-list">
+
+          <li>
+            <span>
+              <strong>Ложные данные.</strong><br>
+              Передача неправдивой информации о возрасте, опыте, стране или
+              личности кандидата.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Поддельные фотографии.</strong><br>
+              Использование чужих, изменённых или сгенерированных материалов.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Передача несовершеннолетних.</strong><br>
+              Участие возможно исключительно после достижения 18 лет.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Передача данных без согласия.</strong><br>
+              Девушка должна понимать предложение и согласиться на дальнейшее
+              общение с компанией.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Вмешательство после передачи.</strong><br>
+              Скаут не обсуждает с моделью рабочие аккаунты, контент, график,
+              заработок и внутренние процессы.
+            </span>
+          </li>
+
+          <li>
+            <span>
+              <strong>Манипуляции со статистикой.</strong><br>
+              Попытки искусственно изменить количество моделей, активность сети
+              или основания для выплаты.
+            </span>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+    <section class="section section-line">
+      <div class="container">
+
+        <div class="section-heading">
+          <span class="section-number">
+            10 — Частые вопросы
+          </span>
+
+          <h2>
+            КОРОТКО О ВЫПЛАТАХ
+          </h2>
+        </div>
+
+        <div class="faq">
+
+          <details>
+            <summary>$3 000 выплачиваются сразу?</summary>
+
+            <div class="details-content">
+              Нет. Вознаграждение связано с первыми тремя полностью
+              завершёнными расчётными месяцами работы модели.
+            </div>
+          </details>
+
+          <details>
+            <summary>Что происходит, если модель уходит раньше?</summary>
+
+            <div class="details-content">
+              Полное вознаграждение не начисляется. Незакрытые выплаты
+              отменяются, а ранее перечисленные авансовые суммы могут быть
+              учтены при расчёте следующей одобренной модели.
+            </div>
+          </details>
+
+          <details>
+            <summary>Влияет ли доход модели на выплату скауту?</summary>
+
+            <div class="details-content">
+              Если компания одобрила модель, а модель честно выполняет
+              согласованный план и завершает обязательные три месяца, доход
+              ниже первоначального прогноза сам по себе не отменяет выплату.
+            </div>
+          </details>
+
+          <details>
+            <summary>Когда начинает действовать VIP-программа?</summary>
+
+            <div class="details-content">
+              После достижения 10 подтверждённых активных моделей, закреплённых
+              за одним скаутом.
+            </div>
+          </details>
+
+          <details>
+            <summary>VIP-процент действительно действует постоянно?</summary>
+
+            <div class="details-content">
+              Да, пока модели остаются активными, скаут соблюдает правила, а
+              сеть сохраняет необходимое количество участников.
+            </div>
+          </details>
+
+          <details>
+            <summary>Что произойдёт, если одна модель уйдёт?</summary>
+
+            <div class="details-content">
+              Процент пересчитывается по текущему количеству активных моделей.
+              Если их становится меньше 10, VIP-выплаты приостанавливаются.
+            </div>
+          </details>
+
+          <details>
+            <summary>Где посмотреть текущий расчёт?</summary>
+
+            <div class="details-content">
+              На первом этапе личных кабинетов нет. Информация фиксируется
+              компанией и предоставляется скауту через Telegram.
+            </div>
+          </details>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section-line" id="contact">
+      <div class="container">
+
+        <div class="contact-card">
+
+          <span class="section-number">
+            Готов начать?
+          </span>
+
+          <h2>
+            ИЗУЧИ ПРОГРАММУ И НАПИШИ В TELEGRAM
+          </h2>
+
+          <p>
+            Перед обращением убедись, что понимаешь требования к кандидатам,
+            условия начисления выплат, правила VIP-программы и ограничения
+            антифрод-системы.
+          </p>
+
+          <ul class="ready-list">
+            <li>Мне исполнилось 18 лет</li>
+            <li>Я изучил инструкцию скаута</li>
+            <li>Я понимаю условия выплат</li>
+            <li>Я согласен с правилами программы</li>
+          </ul>
+
+          <a
+            class="telegram-button"
+            href="https://t.me/scauttdom"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Написать @scauttdom
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+
+      <span>
+        <strong>SCAUTDOM</strong> — партнёрская программа для скаутов.
+      </span>
+
+      <span>
+        Только для совершеннолетних участников 18+.
+      </span>
+
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    function closeMenu() {
+      mobileMenu.classList.remove("open");
+      menuButton.setAttribute("aria-expanded", "false");
+    }
+
+    menuButton.addEventListener("click", function (event) {
+      event.stopPropagation();
+
+      const menuIsOpen = mobileMenu.classList.toggle("open");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        menuIsOpen ? "true" : "false"
+      );
+    });
+
+    mobileMenu.addEventListener("click", function (event) {
+      if (event.target.closest("a")) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener("click", function (event) {
+      if (
+        !mobileMenu.contains(event.target) &&
+        !menuButton.contains(event.target)
+      ) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+    });
+  </script>
+
+</body>
+</html>
