@@ -67,24 +67,11 @@
   const core = window.ScautdomLead;
   if (!core) return;
   window.SCAUTDOM_CONFIG = Object.freeze({ telegram: 'scauttdom', legacyMetaPixelId: '1033836855675200', advertisingTrackingEnabled: false });
-  let collectorAvailable = ['www.scautdom.com', 'scautdom.com'].includes(location.hostname);
-  const counted = new Set();
   function track(event, flow, step) {
     if (navigator.globalPrivacyControl || navigator.doNotTrack === '1') return;
-    const key = `${event}:${flow}:${step}`;
-    if (counted.has(key) || counted.size >= 24) return;
-    counted.add(key);
     const detail = { event, flow, step };
     window.dispatchEvent(new CustomEvent('scautdom:event', { detail }));
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(detail);
-    if (collectorAvailable) {
-      fetch('/api/events', {
-        method: 'POST', credentials: 'omit', keepalive: true,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...detail, page: location.pathname })
-      }).then(response => { if (!response.ok) collectorAvailable = false; }).catch(() => { collectorAvailable = false; });
-    }
+    window.ScautdomAnalytics?.track(event, flow, step);
   }
   const source = core.attribution(location.search);
   document.querySelectorAll('a[href]').forEach(a => {
@@ -290,7 +277,7 @@
       const response = await fetch('https://scautdom-crm-control.tutu5744.chatgpt.site/api/applications', {
         method: 'POST', mode: 'cors', credentials: 'omit', signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, mode, answers: a, source: formSource, website: rawAnswers().website || '' })
+        body: JSON.stringify({ id, mode, answers: a, source: formSource, analytics: window.ScautdomAnalytics?.context(), website: rawAnswers().website || '' })
       });
       if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Сервис сохранения пока недоступен. Попробуй ещё раз или открой Telegram кнопкой ниже.');
       const receipt = await response.json();

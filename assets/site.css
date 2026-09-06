@@ -74,3 +74,7 @@
 .form-trap{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap}
 .quiz [data-save-application]{flex-basis:100%}
 .quiz [data-save-application]:disabled{opacity:.7;cursor:wait}
+
+.analytics-choice{position:fixed;z-index:90;bottom:18px;left:50%;transform:translateX(-50%);width:min(720px,calc(100% - 32px));padding:18px 20px;background:#171b15;color:#f5f6ee;border:1px solid #616952;border-radius:16px;box-shadow:0 8px 38px #0005;display:flex;gap:20px;align-items:center}
+.analytics-choice[hidden]{display:none}.analytics-choice p{font-size:14px;line-height:1.5;margin:0}.analytics-choice a{text-decoration:underline;text-underline-offset:3px}.analytics-choice-actions{display:flex;gap:8px;flex-shrink:0}.analytics-choice button{font:inherit;font-size:14px;color:inherit;background:transparent;border:1px solid #8e977f;border-radius:8px;padding:11px 13px;min-height:44px;cursor:pointer}.analytics-choice button:focus-visible,[data-analytics-settings]:focus-visible{outline:3px solid #d8ff3e;outline-offset:3px}.analytics-choice button:disabled{opacity:.45;cursor:default}.footer [data-analytics-settings]{font:inherit;color:inherit;text-align:left;padding:0;background:none;border:0;cursor:pointer}.footer [data-analytics-settings][hidden]{display:none}
+@media(max-width:650px){.analytics-choice{bottom:12px;display:block;padding:16px}.analytics-choice-actions{margin-top:12px}.analytics-choice-actions button{flex:1}}
