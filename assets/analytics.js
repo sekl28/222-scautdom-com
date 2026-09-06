@@ -19,6 +19,9 @@
   }
   function ready(){return enabled && active && !blocked();}
   const landingSource=source();
+  // Advertising identifiers stay in the consented first-party session. They are
+  // never put into Telegram messages or sent back to an advertising network.
+  const landingAd=(()=>{const q=new URLSearchParams(location.search),clickId=q.get('clickid');if(landingSource.utm_source!=='propellerads' || !/^[A-Za-z0-9._~-]{8,256}$/.test(clickId||''))return null;const numeric=k=>/^\d{1,20}$/.test(q.get(k)||'')?q.get(k):'';return {network:'propellerads',clickId,campaignId:numeric('pa_campaign'),zoneId:numeric('pa_zone')};})();
   const hasLandingSource=Object.keys(landingSource).length>0;
   let checkedLanding=false;
   function context() {
@@ -26,10 +29,10 @@
     const now=Date.now();
     if(!visitor){visitor=read('localStorage',keys.visitor);if(!visitor || !validId(visitor.id) || !Number.isFinite(visitor.at) || now-visitor.at>90*86400000)visitor={id:id(),at:now,first:source()};write('localStorage',keys.visitor,visitor);}
     if(!session)session=read('sessionStorage',keys.session);
-    const changedSource=!checkedLanding && hasLandingSource && JSON.stringify(session?.source)!==JSON.stringify(landingSource);checkedLanding=true;
-    if(!session || changedSource || !validId(session.id) || session.visitor!==visitor.id || !Number.isFinite(session.startedAt) || !Number.isFinite(session.touchedAt) || now-session.touchedAt>30*60000 || now-session.startedAt>23*3600000){session={id:id(),visitor:visitor.id,startedAt:now,touchedAt:now,source:landingSource};pageId=id();engagedMs=0;maxScroll=0;seen.clear();lastTick=performance.now();}
+    const changedSource=!checkedLanding && ((hasLandingSource && JSON.stringify(session?.source)!==JSON.stringify(landingSource)) || (landingAd && session?.ad?.clickId!==landingAd.clickId));checkedLanding=true;
+    if(!session || changedSource || !validId(session.id) || session.visitor!==visitor.id || !Number.isFinite(session.startedAt) || !Number.isFinite(session.touchedAt) || now-session.touchedAt>30*60000 || now-session.startedAt>23*3600000){session={id:id(),visitor:visitor.id,startedAt:now,touchedAt:now,source:landingSource,ad:landingAd};pageId=id();engagedMs=0;maxScroll=0;seen.clear();lastTick=performance.now();}
     session.touchedAt=now;write('sessionStorage',keys.session,session);
-    return {sessionId:session.id,visitorId:visitor.id,source:session.source,firstSource:visitor.first};
+    return {sessionId:session.id,visitorId:visitor.id,source:session.source,firstSource:visitor.first,ad:session.ad||null};
   }
   function measure(){const now=performance.now(),delta=Math.max(0,Math.min(5000,now-lastTick));lastTick=now;if(ready() && document.visibilityState==='visible' && Date.now()-lastActivity<60000)engagedMs=Math.min(7200000,engagedMs+Math.round(delta));const height=document.documentElement.scrollHeight-innerHeight;maxScroll=Math.max(maxScroll,height>0?Math.min(100,Math.round(scrollY/height*100)):100);}
   function send(event,flow='site',step=0,section='') {
