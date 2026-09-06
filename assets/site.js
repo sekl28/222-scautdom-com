@@ -67,11 +67,24 @@
   const core = window.ScautdomLead;
   if (!core) return;
   window.SCAUTDOM_CONFIG = Object.freeze({ telegram: 'scauttdom', legacyMetaPixelId: '1033836855675200', advertisingTrackingEnabled: false });
+  let collectorAvailable = ['www.scautdom.com', 'scautdom.com'].includes(location.hostname);
+  const counted = new Set();
   function track(event, flow, step) {
+    if (navigator.globalPrivacyControl || navigator.doNotTrack === '1') return;
+    const key = `${event}:${flow}:${step}`;
+    if (counted.has(key) || counted.size >= 24) return;
+    counted.add(key);
     const detail = { event, flow, step };
     window.dispatchEvent(new CustomEvent('scautdom:event', { detail }));
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(detail);
+    if (collectorAvailable) {
+      fetch('/api/events', {
+        method: 'POST', credentials: 'omit', keepalive: true,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...detail, page: location.pathname })
+      }).then(response => { if (!response.ok) collectorAvailable = false; }).catch(() => { collectorAvailable = false; });
+    }
   }
   const source = core.attribution(location.search);
   document.querySelectorAll('a[href]').forEach(a => {
@@ -81,7 +94,11 @@
     if (u.origin !== location.origin) return;
     Object.entries(source).forEach(([k, v]) => u.searchParams.set(k, v));
     a.href = u.pathname + u.search + u.hash;
+    if (u.pathname === '/' && u.hash === '#apply') a.addEventListener('click', () => track('application_cta', 'scout', 0));
   });
+  document.querySelectorAll('a[href="#apply"]').forEach(a => a.addEventListener('click', () => track('application_cta', 'scout', 0)));
+  document.querySelectorAll('[data-direct-chat]').forEach(a => a.addEventListener('click', () => track('direct_chat', 'scout', 0)));
+  track('page_view', 'site', 0);
 
   const usd = n => '$' + new Intl.NumberFormat('ru-RU').format(n);
   document.querySelectorAll('[data-scout-calculator]').forEach(box => {
@@ -126,27 +143,76 @@
   const form = document.querySelector('[data-quiz]');
   if (!form) return;
   form.hidden = false;
+  form.noValidate = true;
   const mode = form.dataset.quiz;
+  if ('IntersectionObserver' in window) {
+    const seen = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { track('application_viewed', mode, 1); seen.disconnect(); }
+    }, { threshold: 0.1 });
+    seen.observe(form);
+  }
   const steps = [...form.querySelectorAll('[data-step]')];
+  const controls = [...form.querySelectorAll('input[name], select[name], textarea[name]')];
   const error = form.querySelector('[data-error]');
   const next = form.querySelector('[data-next]');
   const back = form.querySelector('[data-back]');
-  let current = 0, id = '', started = false;
+  const draftStatus = form.querySelector('[data-draft-status]');
+  const clearDraft = form.querySelector('[data-clear-draft]');
+  const draftKey = 'scautdom:draft:v2:' + mode;
+  const ttl = 24 * 60 * 60 * 1000;
+  let current = 0, id = '', started = false, saving;
+  let formSource = source;
+  function rawAnswers() {
+    const result = {};
+    controls.forEach(c => {
+      if (!['checkbox', 'radio'].includes(c.type) || c.checked) result[c.name] = c.value;
+    });
+    return result;
+  }
   function answers() {
-    steps.forEach(s => { s.disabled = false; });
-    const a = Object.fromEntries(new FormData(form));
-    steps.forEach((s, i) => { s.disabled = i !== current; });
-    return a;
+    const raw = rawAnswers(), result = {};
+    controls.forEach(c => {
+      const route = c.closest('[data-route]');
+      if ((!route || route.dataset.route === raw.readiness) && Object.hasOwn(raw, c.name)) result[c.name] = raw[c.name];
+    });
+    return result;
+  }
+  function routeFields() {
+    const readiness = rawAnswers().readiness;
+    form.querySelectorAll('[data-route]').forEach(group => {
+      const active = group.dataset.route === readiness;
+      group.hidden = !active;
+      group.querySelectorAll('input, select, textarea').forEach(c => { c.disabled = !active; });
+    });
+    const tip = form.querySelector('[data-route-tip]');
+    if (tip) tip.textContent = {
+      candidate: 'Обсудим, что уже известно и что нужно уточнить перед знакомством. Данные и документы кандидатки здесь не нужны.',
+      source: 'Назови свой источник и ближайший шаг. Достаточно одной понятной мысли.',
+      exploring: 'Готовый план не нужен. Выбери тему, которую хочешь разобрать первой.'
+    }[readiness] || '';
+  }
+  function saveDraft() {
+    clearTimeout(saving);
+    const data = rawAnswers();
+    clearDraft.hidden = Object.keys(data).length === 0;
+    if (clearDraft.hidden) return;
+    try {
+      sessionStorage.setItem(draftKey, JSON.stringify({ savedAt: Date.now(), data, step: current, id, source: formSource }));
+      draftStatus.textContent = 'Черновик сохранён в этой вкладке на 24 часа.';
+    } catch {
+      draftStatus.textContent = 'Браузер не разрешил сохранить черновик. Перед уходом скопируй готовое сообщение.';
+    }
   }
   function show(index, focus = true) {
     current = index;
-    steps.forEach((s, i) => { s.hidden = i !== index; s.disabled = i !== index; });
-    const names = mode === 'scout' ? ['Способ поиска', 'Мой план', 'Сообщение'] : ['О себе', 'Готовность к старту', 'Сообщение'];
+    steps.forEach((step, i) => { step.hidden = i !== index; step.disabled = i !== index; });
+    routeFields();
+    const names = mode === 'scout' ? ['Твоя ситуация', 'Детали', 'Сообщение'] : ['О себе', 'Готовность к старту', 'Сообщение'];
     form.querySelector('[data-counter]').textContent = `0${index + 1} / ${names[index]}`;
     form.querySelectorAll('.progress i').forEach((bar, i) => bar.classList.toggle('active', i <= index));
     form.querySelector('[data-controls]').hidden = index === 2;
     back.hidden = index === 0;
-    next.textContent = index === 1 ? 'Проверить сообщение →' : mode === 'scout' ? 'Далее: мой план →' : 'Далее: готовность к старту →';
+    next.textContent = index === 1 ? 'Проверить сообщение →' : mode === 'scout' ? 'Далее: детали →' : 'Далее: готовность к старту →';
     error.textContent = '';
     if (focus) {
       steps[index].querySelector('legend').focus({ preventScroll: true });
@@ -154,56 +220,85 @@
     }
     queueReading();
   }
-  const tips = {
-    network: 'Начни с совершеннолетней знакомой, которой интересна эта сфера. Как ты планируешь объяснить ей предложение?',
-    audience: 'Какой контент поможет твоей взрослой аудитории понять предложение? Расскажи о своей странице и плане.',
-    recruiting: 'Какие источники и навыки подбора хочешь использовать? Опиши первый практический шаг.',
-    exploring: 'Выбери один канал поиска. С чего готов начать и что хочешь уточнить у команды?'
-  };
-  form.addEventListener('change', () => {
+  function prepareMessage() {
+    const a = answers(), state = core.assess(mode, a);
+    if (!['ready', 'discuss'].includes(state.status)) return false;
+    if (!id) {
+      const random = crypto.randomUUID ? crypto.randomUUID().replaceAll('-', '').slice(0, 20) : Array.from(crypto.getRandomValues(new Uint8Array(10)), b => b.toString(16).padStart(2, '0')).join('');
+      id = `SD-${mode === 'scout' ? 'S' : 'M'}-${random.toUpperCase()}`;
+    }
+    const message = core.message(mode, a, id, formSource);
+    form.querySelector('[data-message]').value = message;
+    form.querySelector('[data-telegram]').href = core.telegram(message);
+    form.querySelector('[data-review-status]').textContent = `Код обращения: ${id}. Проверь ответы. Команда получит их, когда ты нажмёшь «Отправить» в Telegram.`;
+    return true;
+  }
+  function changed() {
     error.textContent = '';
+    routeFields();
     if (!started) { started = true; track('application_started', mode, 1); }
-  });
+    clearTimeout(saving);
+    saving = setTimeout(saveDraft, 250);
+  }
+  form.addEventListener('input', changed);
+  form.addEventListener('change', changed);
   form.addEventListener('submit', e => {
     e.preventDefault();
     if (current === 2) return;
     const a = answers();
     if (a.age === 'minor') { error.textContent = 'Сотрудничество доступно только с 18 лет.'; return; }
-    for (const control of steps[current].querySelectorAll('input,select,textarea')) {
-      if (!control.checkValidity()) { control.reportValidity(); return; }
+    for (const control of steps[current].querySelectorAll('input, select, textarea')) {
+      if (!control.disabled && !control.checkValidity()) { control.reportValidity(); return; }
     }
     if (current === 0) {
-      if (mode === 'scout') {
-        if (!Object.hasOwn(tips, a.source)) { error.textContent = 'Выбери способ поиска.'; return; }
-        form.querySelector('[data-route-tip]').textContent = tips[a.source];
-      } else if (!core.clean(a.country, 70)) { error.textContent = 'Укажи страну проживания.'; return; }
-      show(1); return;
+      if (mode === 'scout' && !Object.hasOwn(core.labels.readiness, a.readiness)) { error.textContent = 'Выбери свою ситуацию.'; return; }
+      if (mode === 'model' && !core.clean(a.country, 70)) { error.textContent = 'Укажи страну проживания.'; return; }
+      show(1); saveDraft(); track('application_step', mode, 2); return;
     }
-    const state = core.assess(mode, a);
-    if (!['ready', 'discuss'].includes(state.status)) {
-      error.textContent = mode === 'scout'
-        ? 'Укажи имя, опиши план хотя бы в 20 символах и подтверди условия.'
-        : 'Проверь обязательные поля и подтверждение условий.';
-      return;
-    }
-    if (!id) id = 'SD-' + (mode === 'scout' ? 'S' : 'M') + '-' + (crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).slice(2, 10)).toUpperCase();
-    const msg = core.message(mode, a, id, source);
-    form.querySelector('[data-message]').value = msg;
-    form.querySelector('[data-telegram]').href = core.telegram(msg);
-    form.querySelector('[data-review-status]').textContent = state.status === 'ready'
-      ? 'В сообщении есть твои ответы и подтверждение условий. Проверь текст и переходи к знакомству с командой.'
-      : 'Твоя ситуация и вопросы добавлены в сообщение. Проверь текст и обсуди начало работы с командой.';
-    track('message_prepared', mode, 3);
-    show(2);
+    if (!prepareMessage()) { error.textContent = 'Заполни обязательные поля и подтверди, что условия понятны.'; return; }
+    show(2); saveDraft(); track('message_prepared', mode, 3);
   });
-  back.addEventListener('click', () => show(Math.max(0, current - 1)));
+  back.addEventListener('click', () => { show(Math.max(0, current - 1)); saveDraft(); });
   form.querySelector('[data-edit]').addEventListener('click', () => {
-    form.querySelector('[data-copy-status]').textContent = ''; show(1);
+    form.querySelector('[data-copy-status]').textContent = ''; show(1); saveDraft();
   });
   form.querySelector('[data-copy]').addEventListener('click', () => {
     const message = form.querySelector('[data-message]');
     copy(message.value, message, form.querySelector('[data-copy-status]'));
+    track('message_copied', mode, 3);
   });
-  form.querySelector('[data-telegram]').addEventListener('click', () => track('telegram_handoff', mode, 3));
-  show(0, false);
+  form.querySelector('[data-telegram]').addEventListener('click', () => {
+    saveDraft(); track('telegram_handoff', mode, 3);
+  });
+  clearDraft.addEventListener('click', () => {
+    clearTimeout(saving);
+    try { sessionStorage.removeItem(draftKey); } catch { /* Storage may be unavailable. */ }
+    form.reset(); id = ''; started = false; formSource = source;
+    form.querySelector('[data-message]').value = '';
+    form.querySelector('[data-telegram]').href = 'https://t.me/scauttdom';
+    form.querySelector('[data-copy-status]').textContent = '';
+    clearDraft.hidden = true;
+    draftStatus.textContent = 'Черновик удалён. Можно начать заново.';
+    show(0);
+  });
+  addEventListener('pagehide', () => { if (started) saveDraft(); });
+  let initialStep = 0;
+  try {
+    const draft = JSON.parse(sessionStorage.getItem(draftKey) || 'null');
+    if (draft && Number.isFinite(draft.savedAt) && Date.now() - draft.savedAt >= 0 && Date.now() - draft.savedAt < ttl && draft.data && typeof draft.data === 'object') {
+      controls.forEach(c => {
+        const value = draft.data[c.name];
+        if (typeof value !== 'string') return;
+        if (['checkbox', 'radio'].includes(c.type)) c.checked = value === c.value;
+        else if (c.tagName !== 'SELECT' || [...c.options].some(o => o.value === value)) c.value = value.slice(0, c.maxLength > 0 ? c.maxLength : 400);
+      });
+      id = typeof draft.id === 'string' && /^SD-[SM]-[A-Z0-9]{8,20}$/.test(draft.id) ? draft.id : '';
+      formSource = { ...core.attribution(new URLSearchParams(draft.source || {}).toString()), ...source };
+      started = true; clearDraft.hidden = false;
+      initialStep = [0, 1, 2].includes(draft.step) ? draft.step : 0;
+      if (initialStep === 2 && !prepareMessage()) initialStep = 1;
+      draftStatus.textContent = 'Восстановили твой черновик. Можешь продолжить или удалить его.';
+    } else if (draft) sessionStorage.removeItem(draftKey);
+  } catch { /* Form remains usable without session storage. */ }
+  show(initialStep, false);
 })();
