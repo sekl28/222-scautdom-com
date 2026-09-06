@@ -1,7 +1,7 @@
 'use strict';
 
 // Anonymous funnel counters for Vercel runtime logs. No form content or user IDs.
-const EVENTS = new Set(['page_view', 'application_viewed', 'application_started', 'application_step', 'message_prepared', 'message_copied', 'telegram_handoff', 'direct_chat', 'calculator_used', 'application_cta']);
+const EVENTS = new Set(['page_view', 'application_viewed', 'application_started', 'application_step', 'message_prepared', 'message_copied', 'application_received', 'application_save_failed', 'telegram_handoff', 'direct_chat', 'calculator_used', 'application_cta']);
 const PAGES = new Set(['/', '/index.html', '/scout.html', '/model.html', '/payments.html', '/privacy.html', '/404.html']);
 const ORIGINS = new Set(['https://www.scautdom.com', 'https://scautdom.com']);
 module.exports = async function handler(req, res) {

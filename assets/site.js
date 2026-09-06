@@ -160,7 +160,9 @@
   const clearDraft = form.querySelector('[data-clear-draft]');
   const draftKey = 'scautdom:draft:v2:' + mode;
   const ttl = 24 * 60 * 60 * 1000;
-  let current = 0, id = '', started = false, saving;
+  let current = 0, id = '', started = false, saving, submittedMessage = '';
+  const submitApplication = form.querySelector('[data-save-application]');
+  const saveStatus = form.querySelector('[data-save-status]');
   let formSource = source;
   function rawAnswers() {
     const result = {};
@@ -197,7 +199,7 @@
     clearDraft.hidden = Object.keys(data).length === 0;
     if (clearDraft.hidden) return;
     try {
-      sessionStorage.setItem(draftKey, JSON.stringify({ savedAt: Date.now(), data, step: current, id, source: formSource }));
+      sessionStorage.setItem(draftKey, JSON.stringify({ savedAt: Date.now(), data, step: current, id, submittedMessage, source: formSource }));
       draftStatus.textContent = 'Черновик сохранён в этой вкладке на 24 часа.';
     } catch {
       draftStatus.textContent = 'Браузер не разрешил сохранить черновик. Перед уходом скопируй готовое сообщение.';
@@ -223,6 +225,7 @@
   function prepareMessage() {
     const a = answers(), state = core.assess(mode, a);
     if (!['ready', 'discuss'].includes(state.status)) return false;
+    if (id && submittedMessage && core.message(mode, a, id, formSource) !== submittedMessage) { id = ''; submittedMessage = ''; }
     if (!id) {
       const random = crypto.randomUUID ? crypto.randomUUID().replaceAll('-', '').slice(0, 20) : Array.from(crypto.getRandomValues(new Uint8Array(10)), b => b.toString(16).padStart(2, '0')).join('');
       id = `SD-${mode === 'scout' ? 'S' : 'M'}-${random.toUpperCase()}`;
@@ -230,7 +233,8 @@
     const message = core.message(mode, a, id, formSource);
     form.querySelector('[data-message]').value = message;
     form.querySelector('[data-telegram]').href = core.telegram(message);
-    form.querySelector('[data-review-status]').textContent = `Код обращения: ${id}. Проверь ответы. Команда получит их, когда ты нажмёшь «Отправить» в Telegram.`;
+    form.querySelector('[data-review-status]').textContent = `Код обращения: ${id}. Проверь ответы, сохрани обращение и продолжи разговор в Telegram.`;
+    saveStatus.textContent = '';
     return true;
   }
   function changed() {
@@ -270,13 +274,55 @@
   form.querySelector('[data-telegram]').addEventListener('click', () => {
     saveDraft(); track('telegram_handoff', mode, 3);
   });
+  submitApplication.addEventListener('click', async () => {
+    if (submitApplication.disabled || !prepareMessage()) return;
+    const a = answers();
+    submittedMessage = form.querySelector('[data-message]').value;
+    saveDraft();
+    submitApplication.disabled = true;
+    submitApplication.textContent = 'Сохраняем обращение…';
+    form.querySelector('[data-edit]').disabled = true;
+    clearDraft.disabled = true;
+    saveStatus.textContent = 'Подтверждаем сохранение. Ответы останутся в черновике.';
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch('https://scautdom-crm-control.tutu5744.chatgpt.site/api/applications', {
+        method: 'POST', mode: 'cors', credentials: 'omit', signal: controller.signal,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, mode, answers: a, source: formSource, website: rawAnswers().website || '' })
+      });
+      if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Сервис сохранения пока недоступен. Попробуй ещё раз или открой Telegram кнопкой ниже.');
+      const receipt = await response.json();
+      if (!response.ok) {
+        if (response.status === 409) { id = ''; submittedMessage = ''; prepareMessage(); saveDraft(); }
+        throw new Error(receipt.error || 'Не удалось подтвердить сохранение. Можно повторить или отправить текст в Telegram.');
+      }
+      if (receipt.id !== id || receipt.status !== 'received' || !receipt.receivedAt) throw new Error('Подтверждение не получено. Повтори сохранение с тем же кодом или отправь текст в Telegram.');
+      saveStatus.textContent = 'Обращение сохранено. В Telegram нажми «Отправить», чтобы продолжить разговор.';
+      track('application_received', mode, 3);
+      track('telegram_handoff', mode, 3);
+      // Same-tab navigation works on mobile without asynchronous popup blocking.
+      location.assign(core.telegram(form.querySelector('[data-message]').value));
+    } catch (e) {
+      saveStatus.textContent = e.name === 'AbortError' ? 'Подтверждение не пришло вовремя. Повтори сохранение — дубль с тем же кодом не создастся. Или открой Telegram кнопкой ниже.' : e.message;
+      track('application_save_failed', mode, 3);
+    } finally {
+      clearTimeout(timeout);
+      submitApplication.disabled = false;
+      submitApplication.textContent = 'Сохранить и открыть Telegram →';
+      form.querySelector('[data-edit]').disabled = false;
+      clearDraft.disabled = false;
+    }
+  });
   clearDraft.addEventListener('click', () => {
     clearTimeout(saving);
     try { sessionStorage.removeItem(draftKey); } catch { /* Storage may be unavailable. */ }
-    form.reset(); id = ''; started = false; formSource = source;
+    form.reset(); id = ''; started = false; submittedMessage = ''; formSource = source;
     form.querySelector('[data-message]').value = '';
     form.querySelector('[data-telegram]').href = 'https://t.me/scauttdom';
     form.querySelector('[data-copy-status]').textContent = '';
+    saveStatus.textContent = '';
     clearDraft.hidden = true;
     draftStatus.textContent = 'Черновик удалён. Можно начать заново.';
     show(0);
@@ -293,6 +339,10 @@
         else if (c.tagName !== 'SELECT' || [...c.options].some(o => o.value === value)) c.value = value.slice(0, c.maxLength > 0 ? c.maxLength : 400);
       });
       id = typeof draft.id === 'string' && /^SD-[SM]-[A-Z0-9]{8,20}$/.test(draft.id) ? draft.id : '';
+      // Previously generated short codes remain valid in Telegram; new server
+      // submissions use the current 80-bit code format.
+      if (id && !/^SD-[SM]-[A-Z0-9]{20}$/.test(id)) id = '';
+      submittedMessage = typeof draft.submittedMessage === 'string' ? draft.submittedMessage.slice(0, 3000) : '';
       formSource = { ...core.attribution(new URLSearchParams(draft.source || {}).toString()), ...source };
       started = true; clearDraft.hidden = false;
       initialStep = [0, 1, 2].includes(draft.step) ? draft.step : 0;
